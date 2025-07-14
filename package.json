@@ -1,0 +1,20 @@
+{
+  "name": "texto-diario",
+  "version": "1.0.0",
+  "description": "Enviador automático do texto diário JW.org para grupos do WhatsApp",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "bin": "index.js",
+  "pkg": {
+    "scripts": [],
+    "assets": [
+      "config.json"
+    ]
+  },
+  "dependencies": {
+    "puppeteer": "^21.3.8",
+    "node-cron": "^3.0.3"
+  }
+}
