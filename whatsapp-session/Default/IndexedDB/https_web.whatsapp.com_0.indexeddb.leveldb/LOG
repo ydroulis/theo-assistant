@@ -1,0 +1,26 @@
+2025/07/19-20:16:22.633 17b0 Reusing MANIFEST C:\Users\yuri-\Downloads\texto-diario-bot\whatsapp-session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/07/19-20:16:22.639 17b0 Recovering log #2721
+2025/07/19-20:16:22.681 17b0 Reusing old log C:\Users\yuri-\Downloads\texto-diario-bot\whatsapp-session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/002721.log 
+2025/07/19-20:16:22.682 17b0 Delete type=2 #2717
+2025/07/19-20:16:22.682 17b0 Delete type=2 #2723
+2025/07/19-20:16:23.410 18bc Level-0 table #2727: started
+2025/07/19-20:16:23.430 18bc Level-0 table #2727: 406529 bytes OK
+2025/07/19-20:16:23.432 18bc Delete type=0 #2721
+2025/07/19-20:16:23.433 4c74 Manual compaction at level-0 from '\x00{\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00|\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/07/19-20:16:23.437 18bc Level-0 table #2729: started
+2025/07/19-20:16:23.462 18bc Level-0 table #2729: 1879 bytes OK
+2025/07/19-20:16:23.464 18bc Delete type=0 #2726
+2025/07/19-20:16:23.465 4c74 Manual compaction at level-0 from '\x00|\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00}\x00\x00\x00' @ 0 : 0; will stop at '\x00|\x00\x00\x05' @ 9581559 : 0
+2025/07/19-20:16:23.465 4c74 Compacting 1@0 + 1@1 files
+2025/07/19-20:16:23.490 4c74 Generated table #2730@0: 8147 keys, 169047 bytes
+2025/07/19-20:16:23.490 4c74 Compacted 1@0 + 1@1 files => 169047 bytes
+2025/07/19-20:16:23.491 4c74 compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/07/19-20:16:23.492 4c74 Delete type=2 #2729
+2025/07/19-20:16:23.493 4c74 Manual compaction at level-0 from '\x00|\x00\x00\x05' @ 9581559 : 0 .. '\x00}\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/07/19-20:16:25.771 18bc Compacting 1@1 + 1@2 files
+2025/07/19-20:16:25.836 18bc Generated table #2731@1: 32791 keys, 1351902 bytes
+2025/07/19-20:16:25.836 18bc Compacted 1@1 + 1@2 files => 1351902 bytes
+2025/07/19-20:16:25.837 18bc compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/07/19-20:16:25.838 18bc Delete type=2 #2724
+2025/07/19-20:16:25.839 18bc Delete type=2 #2727
+2025/07/19-20:16:25.839 18bc Delete type=2 #2730

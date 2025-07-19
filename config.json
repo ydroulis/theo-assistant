@@ -1,6 +1,19 @@
 {
+  "greetings": [
+    "Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!",
+    "Bom dia, queridos irmãos! Compartilhando o texto diário de hoje. Abraços!",
+    "Bom dia, família! Aqui está o texto diário para hoje. Fiquem com Jeová!",
+    "Bom dia, amigos! Mais um texto diário fresquinho para vocês. Fiquem com Jeová!",
+    "Bom dia, irmãos! Compartilhando o texto diário do dia. Tenham um ótimo dia!",
+    "Bom dia, queridos amigos! Aqui está o texto diário de hoje. Até mais!",
+    "Bom dia, família! Vamos começar mais um dia com o texto diário de hoje. Espero que vocês tenham um dia maravilhoso!",
+    "Bom dia, irmãos! Compartilhando o texto diário para hoje. Fiquem com Jeová e Jesus!"
+  ],
   "greeting": "Bom dia, amigos! Aqui é o texto diário do dia de hoje. Que Jeová abençoe vocês!",
+  "presentationMessage": "Olá! Sou o bot do texto diário. A partir de agora, enviarei automaticamente o texto diário todos os dias às 9:00 da manhã. Que Jeová abençoe vocês! 🙏",
   "whatsappGroups": [
-    "Testando automação"
+    "Testando automação",
+    "Teste 1",
+    "Teste 2"
   ]
 }
