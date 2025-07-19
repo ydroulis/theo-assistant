@@ -1,3 +1,5 @@
-2025/07/19-18:41:54.199 5e24 Reusing MANIFEST C:\Users\yuri-\Downloads\texto-diario-bot\whatsapp-session\Default\Local Storage\leveldb/MANIFEST-000001
-2025/07/19-18:41:54.215 5e24 Recovering log #11
-2025/07/19-18:41:54.229 5e24 Reusing old log C:\Users\yuri-\Downloads\texto-diario-bot\whatsapp-session\Default\Local Storage\leveldb/000011.log 
+2025/07/19-20:12:53.615 35f8 Reusing MANIFEST C:\Users\yuri-\Downloads\texto-diario-bot\whatsapp-session\Default\Local Storage\leveldb/MANIFEST-000001
+2025/07/19-20:12:53.622 35f8 Recovering log #15
+2025/07/19-20:12:53.628 35f8 Level-0 table #18: started
+2025/07/19-20:12:53.647 35f8 Level-0 table #18: 20569 bytes OK
+2025/07/19-20:12:53.662 35f8 Delete type=0 #15

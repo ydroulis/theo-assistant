@@ -134,12 +134,7 @@ async function enviarMensagemWhatsApp(groupName, mensagem, page) {
 
         let messageSelector = null;
         const messageSelectors = [
-            'div[data-testid="conversation-compose-box-input"]',
-            'div[data-testid="compose-box-input"]',
-            'div[contenteditable="true"][data-tab="6"]',
             'div[role="textbox"]',
-            'div[contenteditable="true"]',
-            'div[data-testid="conversation-compose-box-input"] div[contenteditable="true"]'
         ];
 
         // Tentar encontrar o campo de mensagem
@@ -257,7 +252,18 @@ async function runBot(sendPresentation = false) {
                 throw new Error('Não foi possível obter o texto diário');
             }
 
-            mensagemFinal = `${config.greeting}\n\n${texto}`;
+            // Escolher uma saudação aleatória
+            let saudacao;
+            if (config.greetings && config.greetings.length > 0) {
+                const randomIndex = Math.floor(Math.random() * config.greetings.length);
+                saudacao = config.greetings[randomIndex];
+                console.log('🎲 Saudação escolhida:', saudacao);
+            } else {
+                saudacao = config.greeting; // Fallback para a saudação original
+                console.log('📝 Usando saudação padrão');
+            }
+
+            mensagemFinal = `${saudacao}\n\n${texto}`;
             console.log('📝 Mensagem preparada:', mensagemFinal.substring(0, 100) + '...');
         }
 
@@ -443,42 +449,109 @@ async function runScheduledBot() {
     await runBot(false); // false = não é apresentação
 }
 
+// Função para verificar e enviar apresentação para novos grupos (13:00)
+async function checkNewGroupsAndSendPresentation() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
+    console.log(`🔍 [${timeStr}] Verificando grupos novos (13:00)...`);
+
+    // Obter grupos que ainda não receberam apresentação
+    const groupsWithoutPresentation = getGroupsWithoutPresentation();
+
+    if (groupsWithoutPresentation.length === 0) {
+        console.log(`✅ [${timeStr}] Todos os grupos já receberam a mensagem de apresentação!`);
+        return;
+    }
+
+    console.log(`📤 [${timeStr}] Encontrados ${groupsWithoutPresentation.length} grupos novos que precisam de apresentação:`);
+    console.log(`📋 [${timeStr}] Grupos pendentes: ${groupsWithoutPresentation.join(', ')}`);
+    console.log(`🚀 [${timeStr}] Iniciando envio de apresentação...`);
+
+    // Executar bot com apresentação
+    await runBot(true); // true = é apresentação
+}
+
 // Função para executar o bot com apresentação
 async function runPresentationBot() {
     console.log('🎉 Executando bot com mensagem de apresentação...');
     await runBot(true); // true = é apresentação
 }
 
-// Configurar agendamento para rodar todo dia às 9h da manhã
-cron.schedule('0 9 * * *', runScheduledBot, {
-    timezone: 'America/Sao_Paulo'
-});
-
-console.log('⏰ Agendamento configurado: todos os dias às 09:00');
-
-// Verificar configuração dos grupos
-if (!config.whatsappGroups || config.whatsappGroups.length === 0) {
-    console.error('❌ Nenhum grupo configurado no config.json');
-    console.log('💡 Adicione os nomes dos grupos do WhatsApp no arquivo config.json');
-    console.log('💡 Exemplo: ["Nome do Grupo 1", "Nome do Grupo 2"]');
-    process.exit(1);
+// Função para mostrar ajuda
+function showHelp() {
+    console.log('🤖 Bot do Texto Diário - Comandos Disponíveis:');
+    console.log('');
+    console.log('📋 Comandos:');
+    console.log('  node index.js                    - Executa o bot com agendamentos');
+    console.log('  node index.js --help             - Mostra esta ajuda');
+    console.log('  node index.js --test-daily       - Testa envio do texto diário');
+    console.log('  node index.js --test-presentation - Testa envio da apresentação');
+    console.log('  node index.js --status           - Mostra status dos grupos');
+    console.log('  node index.js --reset-presentation - Reseta apresentações enviadas');
+    console.log('');
+    console.log('💡 Exemplos:');
+    console.log('  node index.js --test-daily       # Testa envio do texto diário');
+    console.log('  node index.js --test-presentation # Testa envio da apresentação');
+    console.log('  node index.js --status           # Mostra status atual');
 }
 
-console.log(`📋 Grupos configurados: ${config.whatsappGroups.join(', ')}`);
-
-// Mostrar status dos grupos
-showGroupsStatus();
-
-// Verificar se há grupos que ainda não receberam apresentação
-const groupsWithoutPresentation = getGroupsWithoutPresentation();
-
-if (groupsWithoutPresentation.length > 0) {
-    console.log(`🎉 Detectados ${groupsWithoutPresentation.length} grupos que ainda não receberam apresentação:`);
-    console.log(`📋 Grupos pendentes: ${groupsWithoutPresentation.join(', ')}`);
-    console.log('🎉 Enviando mensagem de apresentação para grupos pendentes...');
-    runPresentationBot();
-} else {
-    console.log('✅ Todos os grupos já receberam a mensagem de apresentação!');
-    console.log('💡 Para reenviar a mensagem de apresentação, delete o arquivo "presentation-sent.json"');
-    console.log('⏰ O bot está agendado para rodar todos os dias às 09:00');
+// Função para resetar apresentações
+function resetPresentations() {
+    try {
+        if (fs.existsSync(presentationSentFile)) {
+            fs.unlinkSync(presentationSentFile);
+            console.log('✅ Arquivo de apresentações resetado!');
+        } else {
+            console.log('ℹ️ Arquivo de apresentações não existe.');
+        }
+    } catch (error) {
+        console.error('❌ Erro ao resetar apresentações:', error.message);
+    }
 }
+
+// Função principal que verifica argumentos de linha de comando
+async function main() {
+    const args = process.argv.slice(2);
+
+    // Verificar argumentos
+    if (args.includes('--help') || args.includes('-h')) {
+        showHelp();
+        return;
+    }
+
+    if (args.includes('--status')) {
+        console.log('📊 Status dos grupos:');
+        showGroupsStatus();
+        return;
+    }
+
+    if (args.includes('--reset-presentation')) {
+        resetPresentations();
+        return;
+    }
+
+    if (args.includes('--test-daily')) {
+        console.log('🧪 Testando envio do texto diário...');
+        await runBot(false);
+        return;
+    }
+
+    if (args.includes('--test-presentation')) {
+        console.log('🧪 Testando envio da apresentação...');
+        await runBot(true);
+        return;
+    }
+
+    // Se não há argumentos, executar com agendamentos (comportamento padrão)
+    console.log('🚀 Bot do Texto Diário iniciado!');
+
+
+}
+
+// Executar função principal
+main().catch(console.error);
