@@ -7,6 +7,7 @@ Automação para enviar o texto diário do site jw.org para **múltiplos grupos*
 - ✅ **Saudações aleatórias** - Cada envio usa uma saudação diferente
 - ✅ **Comandos de teste** - Teste cada funcionalidade independentemente
 - ✅ **Verificação às 13:00** - Detecta grupos novos automaticamente
+- ✅ **Lembrete de relatórios** - Envia lembrete no dia 1 de cada mês
 - ✅ **Suporte a múltiplos grupos** - Envia para vários grupos simultaneamente
 - ✅ **Logs detalhados** - Progresso visual com timestamps
 - ✅ **Verificação de configuração** - Valida se há grupos configurados
@@ -29,26 +30,27 @@ Automação para enviar o texto diário do site jw.org para **múltiplos grupos*
 
 2. **Configure o arquivo `config.json`:**
    ```json
-   {
-     "greetings": [
-       "Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!",
-       "Bom dia, queridos irmãos! Compartilhando o texto diário de hoje. Abraços!",
-       "Bom dia, família! Aqui está o texto diário para hoje. Fiquem com Jeová!",
-       "Bom dia, amigos! Mais um texto diário fresquinho para vocês. Fiquem com Jeová!",
-       "Bom dia, irmãos! Compartilhando o texto diário do dia. Tenham um ótimo dia!",
-       "Bom dia, queridos amigos! Aqui está o texto diário de hoje. Até mais!",
-       "Bom dia, família! Vamos começar mais um dia com o texto diário de hoje. Espero que vocês tenham um dia maravilhoso!",
-       "Bom dia, irmãos! Compartilhando o texto diário para hoje. Fiquem com Jeová e Jesus!"
-     ],
-     "greeting": "Bom dia, amigos! Aqui é o texto diário do dia de hoje. Que Jeová abençoe vocês!",
-     "presentationMessage": "Olá! Sou o bot do texto diário. A partir de agora, enviarei automaticamente o texto diário todos os dias às 9:00 da manhã. Que Jeová abençoe vocês! 🙏",
-     "whatsappGroups": [
-       "Nome Exato do Grupo 1",
-       "Nome Exato do Grupo 2",
-       "Nome Exato do Grupo 3"
-     ]
-   }
-   ```
+{
+  "greetings": [
+    "Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!",
+    "Bom dia, queridos irmãos! Compartilhando o texto diário de hoje. Abraços!",
+    "Bom dia, família! Aqui está o texto diário para hoje. Fiquem com Jeová!",
+    "Bom dia, amigos! Mais um texto diário fresquinho para vocês. Fiquem com Jeová!",
+    "Bom dia, irmãos! Compartilhando o texto diário do dia. Tenham um ótimo dia!",
+    "Bom dia, queridos amigos! Aqui está o texto diário de hoje. Até mais!",
+    "Bom dia, família! Vamos começar mais um dia com o texto diário de hoje. Espero que vocês tenham um dia maravilhoso!",
+    "Bom dia, irmãos! Compartilhando o texto diário para hoje. Fiquem com Jeová e Jesus!"
+  ],
+  "greeting": "Bom dia, amigos! Aqui é o texto diário do dia de hoje. Que Jeová abençoe vocês!",
+  "presentationMessage": "Olá! Sou o bot do texto diário. A partir de agora, enviarei automaticamente o texto diário todos os dias às 9:00 da manhã. Que Jeová abençoe vocês! 🙏",
+  "reportReminderMessage": "Bom dia, irmãos! 📊 Lembrete importante: Hoje é dia 1 do mês e precisamos enviar os relatórios de campo do mês passado. Por favor, não se esqueçam de enviar seus relatórios para o coordenador. Que Jeová abençoe vocês! 🙏",
+  "whatsappGroups": [
+    "Nome Exato do Grupo 1",
+    "Nome Exato do Grupo 2",
+    "Nome Exato do Grupo 3"
+  ]
+}
+```
 
 ## 🎯 Como usar
 
@@ -61,6 +63,7 @@ node index.js
 # Comandos de teste
 node index.js --test-daily          # Testa envio do texto diário
 node index.js --test-presentation   # Testa envio da apresentação
+node index.js --test-report         # Testa envio do lembrete de relatórios
 node index.js --status              # Mostra status dos grupos
 node index.js --reset-presentation  # Reseta apresentações enviadas
 node index.js --help                # Mostra ajuda completa
@@ -70,7 +73,8 @@ node index.js --help                # Mostra ajuda completa
 
 O bot está configurado para rodar **automaticamente**:
 - **09:00** - Envio do texto diário para todos os grupos
-- **13:00** - Verificação de grupos novos (envia apresentação se necessário)
+- **09:06** - Verificação de grupos novos (envia apresentação se necessário)
+- **09:30** - Lembrete de relatórios de campo (dia 1 de cada mês)
 
 Basta rodar:
 ```bash
@@ -99,6 +103,7 @@ Edite o arquivo `config.json` para adicionar/remover grupos:
 - **greetings**: Array com saudações aleatórias (obrigatório)
 - **greeting**: Saudação padrão (fallback)
 - **presentationMessage**: Mensagem enviada na primeira execução
+- **reportReminderMessage**: Mensagem de lembrete de relatórios (dia 1 do mês)
 - **whatsappGroups**: Array com os nomes exatos dos grupos
 
 ### Saudações Aleatórias
@@ -114,14 +119,17 @@ No arquivo `index.js`, procure por:
 ```js
 // 09:00 - Texto diário
 cron.schedule('0 9 * * *', runScheduledBot, {
-// 13:00 - Verificação de grupos novos
-cron.schedule('0 13 * * *', checkNewGroupsAndSendPresentation, {
+// 09:06 - Verificação de grupos novos
+cron.schedule('6 9 * * *', checkNewGroupsAndSendPresentation, {
+// 09:30 - Lembrete de relatórios (dia 1 do mês)
+cron.schedule('30 9 1 * *', sendReportReminder, {
 ```
 
 Altere para os horários desejados usando o formato cron:
 - `'0 9 * * *'` = 9:00 todos os dias
 - `'30 8 * * *'` = 8:30 todos os dias
 - `'0 9 * * 1-5'` = 9:00 de segunda a sexta
+- `'30 9 1 * *'` = 9:30 no dia 1 de cada mês
 
 Veja exemplos em: https://crontab.guru/
 
@@ -133,7 +141,8 @@ O bot agora exibe logs muito mais detalhados:
 🚀 Bot do Texto Diário iniciado!
 ⏰ Agendamento configurado:
    - 09:00: Envio do texto diário
-   - 13:00: Verificação de grupos novos
+   - 09:06: Verificação de grupos novos
+   - 09:30: Lembrete de relatórios (dia 1 do mês)
 📋 Grupos configurados: Testando automação, Teste 1, Teste 2
 📊 Status dos grupos:
 ✅ Testando automação - Apresentação enviada
@@ -152,7 +161,8 @@ O bot agora exibe logs muito mais detalhados:
 - 📤 **Progresso**: Qual grupo está sendo processado
 - ✅ **Sucesso**: Confirmação de cada mensagem enviada
 - ❌ **Erro**: Detalhes de erros específicos por grupo
-- 🔍 **Verificação**: Status de grupos novos às 13:00
+- 🔍 **Verificação**: Status de grupos novos às 09:06
+- 📊 **Relatórios**: Lembrete de relatórios às 09:30 (dia 1 do mês)
 
 ## 🧪 Comandos de Teste
 
@@ -171,6 +181,14 @@ node index.js --test-presentation
 - Envia mensagem de apresentação
 - Apenas para grupos que ainda não receberam
 - Marca grupos como "apresentação enviada"
+
+### Testar Lembrete de Relatórios
+```bash
+node index.js --test-report
+```
+- Envia mensagem de lembrete de relatórios
+- Para todos os grupos configurados
+- Útil para testar a funcionalidade antes do dia 1
 
 ### Verificar Status
 ```bash
@@ -202,10 +220,16 @@ node index.js --reset-presentation
 - Processa grupos sequencialmente (um por vez)
 
 ### Verificação Automática de Grupos Novos
-- **13:00 diariamente**: Verifica se há grupos novos
+- **09:06 diariamente**: Verifica se há grupos novos
 - **Detecção automática**: Identifica grupos sem apresentação
 - **Envio automático**: Envia apresentação para grupos novos
 - **Controle inteligente**: Não reenvia para grupos que já receberam
+
+### Lembrete Automático de Relatórios de Campo
+- **09:30 no dia 1 de cada mês**: Envia lembrete de relatórios
+- **Mensagem personalizada**: Lembra sobre envio de relatórios do mês anterior
+- **Envio para todos os grupos**: Todos os grupos configurados recebem o lembrete
+- **Configurável**: Mensagem pode ser personalizada no `config.json`
 
 ### Tratamento de Erros
 - Se um grupo falhar, continua com os próximos
@@ -283,7 +307,10 @@ node index.js --test-presentation
 # 4. Teste o envio do texto diário
 node index.js --test-daily
 
-# 5. Execute o bot com agendamentos
+# 5. Teste o lembrete de relatórios
+node index.js --test-report
+
+# 6. Execute o bot com agendamentos
 node index.js
 ```
 
@@ -306,4 +333,4 @@ node index.js --test-presentation
 
 ---
 
-**Projeto otimizado com saudações aleatórias, comandos de teste e verificação automática de grupos novos! 🚀** 
+**Projeto otimizado com saudações aleatórias, comandos de teste, verificação automática de grupos novos e lembrete de relatórios! 🚀** 

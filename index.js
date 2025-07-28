@@ -228,11 +228,13 @@ async function enviarMensagemWhatsApp(groupName, mensagem, page) {
 }
 
 // Função principal do bot
-async function runBot(sendPresentation = false) {
+async function runBot(sendPresentation = false, sendReportReminder = false) {
     let browser = null;
     try {
         if (sendPresentation) {
             console.log('🎉 Iniciando bot com mensagem de apresentação...');
+        } else if (sendReportReminder) {
+            console.log('📊 Iniciando bot com lembrete de relatórios...');
         } else {
             console.log('🚀 Iniciando bot do texto diário...');
         }
@@ -243,6 +245,10 @@ async function runBot(sendPresentation = false) {
             // Usar mensagem de apresentação
             mensagemFinal = config.presentationMessage;
             console.log('📝 Mensagem de apresentação preparada');
+        } else if (sendReportReminder) {
+            // Usar mensagem de lembrete de relatórios
+            mensagemFinal = config.reportReminderMessage;
+            console.log('📝 Mensagem de lembrete de relatórios preparada');
         } else {
             // Obter o texto diário
             console.log('📖 Obtendo texto diário...');
@@ -403,7 +409,7 @@ async function runBot(sendPresentation = false) {
 
         console.log('✅ Login confirmado, iniciando envio de mensagens...');
 
-        // Verificar se é execução de apresentação ou texto diário
+        // Verificar se é execução de apresentação, lembrete de relatórios ou texto diário
         if (sendPresentation) {
             // Enviar apenas para grupos que ainda não receberam apresentação
             const groupsWithoutPresentation = getGroupsWithoutPresentation();
@@ -426,6 +432,21 @@ async function runBot(sendPresentation = false) {
                     console.log(`✅ Apresentação enviada com sucesso para: ${grupo}`);
                 } catch (error) {
                     console.error(`❌ Erro ao enviar apresentação para ${grupo}:`, error.message);
+                }
+            }
+        } else if (sendReportReminder) {
+            // Enviar lembrete de relatórios para todos os grupos
+            console.log(`📤 Enviando lembrete de relatórios para ${config.whatsappGroups.length} grupos...`);
+            for (let i = 0; i < config.whatsappGroups.length; i++) {
+                const grupo = config.whatsappGroups[i];
+                console.log(`📤 Enviando lembrete de relatórios para grupo ${i + 1}/${config.whatsappGroups.length}: ${grupo}`);
+                try {
+                    await enviarMensagemWhatsApp(grupo, mensagemFinal, page);
+                    // Aguardar mais tempo entre mensagens
+                    await page.waitForTimeout(5000);
+                    console.log(`✅ Lembrete de relatórios enviado com sucesso para: ${grupo}`);
+                } catch (error) {
+                    console.error(`❌ Erro ao enviar lembrete de relatórios para ${grupo}:`, error.message);
                 }
             }
         } else {
@@ -468,7 +489,7 @@ async function runScheduledBot() {
     await runBot(false); // false = não é apresentação
 }
 
-// Função para verificar e enviar apresentação para novos grupos (13:00)
+// Função para verificar e enviar apresentação para novos grupos (09:06)
 async function checkNewGroupsAndSendPresentation() {
     const now = new Date();
     const timeStr = now.toLocaleTimeString('pt-BR', {
@@ -477,7 +498,7 @@ async function checkNewGroupsAndSendPresentation() {
         second: '2-digit'
     });
 
-    console.log(`🔍 [${timeStr}] Verificando grupos novos (13:00)...`);
+    console.log(`🔍 [${timeStr}] Verificando grupos novos (09:06)...`);
 
     // Obter grupos que ainda não receberam apresentação
     const groupsWithoutPresentation = getGroupsWithoutPresentation();
@@ -495,10 +516,32 @@ async function checkNewGroupsAndSendPresentation() {
     await runBot(true); // true = é apresentação
 }
 
+// Função para enviar lembrete de relatórios no dia 1 de cada mês (09:30)
+async function sendReportReminder() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
+    console.log(`📊 [${timeStr}] Enviando lembrete de relatórios de campo (dia 1 do mês)...`);
+    console.log(`📋 [${timeStr}] Enviando para ${config.whatsappGroups.length} grupos...`);
+
+    // Executar bot com lembrete de relatórios
+    await runBot(false, true); // false = não é apresentação, true = é lembrete de relatórios
+}
+
 // Função para executar o bot com apresentação
 async function runPresentationBot() {
     console.log('🎉 Executando bot com mensagem de apresentação...');
     await runBot(true); // true = é apresentação
+}
+
+// Função para executar o bot com lembrete de relatórios
+async function runReportReminderBot() {
+    console.log('📊 Executando bot com lembrete de relatórios...');
+    await runBot(false, true); // false = não é apresentação, true = é lembrete de relatórios
 }
 
 // Função para mostrar ajuda
@@ -510,12 +553,14 @@ function showHelp() {
     console.log('  node index.js --help             - Mostra esta ajuda');
     console.log('  node index.js --test-daily       - Testa envio do texto diário');
     console.log('  node index.js --test-presentation - Testa envio da apresentação');
+    console.log('  node index.js --test-report      - Testa envio do lembrete de relatórios');
     console.log('  node index.js --status           - Mostra status dos grupos');
     console.log('  node index.js --reset-presentation - Reseta apresentações enviadas');
     console.log('');
     console.log('💡 Exemplos:');
     console.log('  node index.js --test-daily       # Testa envio do texto diário');
     console.log('  node index.js --test-presentation # Testa envio da apresentação');
+    console.log('  node index.js --test-report      # Testa envio do lembrete de relatórios');
     console.log('  node index.js --status           # Mostra status atual');
 }
 
@@ -566,10 +611,54 @@ async function main() {
         return;
     }
 
+    if (args.includes('--test-report')) {
+        console.log('🧪 Testando envio do lembrete de relatórios...');
+        await runBot(false, true);
+        return;
+    }
+
     // Se não há argumentos, executar com agendamentos (comportamento padrão)
     console.log('🚀 Bot do Texto Diário iniciado!');
 
+    // Configurar agendamentos
+    console.log('⏰ Configurando agendamentos...');
 
+    // Agendar texto diário para 09:00
+    cron.schedule('0 9 * * *', () => {
+        runScheduledBot();
+    }, {
+        scheduled: true,
+        timezone: "America/Sao_Paulo"
+    });
+
+    // Agendar verificação de novos grupos para 09:06
+    cron.schedule('6 9 * * *', () => {
+        checkNewGroupsAndSendPresentation();
+    }, {
+        scheduled: true,
+        timezone: "America/Sao_Paulo"
+    });
+
+    // Agendar lembrete de relatórios para 09:30 no dia 1 de cada mês
+    cron.schedule('30 9 1 * *', () => {
+        sendReportReminder();
+    }, {
+        scheduled: true,
+        timezone: "America/Sao_Paulo"
+    });
+
+    console.log('✅ Agendamentos configurados:');
+    console.log('   📅 Texto diário: 09:00');
+    console.log('   📅 Verificação de novos grupos: 09:06');
+    console.log('   📅 Lembrete de relatórios: 09:30 (dia 1 de cada mês)');
+    console.log('');
+    console.log('🤖 Bot em execução... Pressione Ctrl+C para parar');
+
+    // Manter o processo ativo
+    process.on('SIGINT', () => {
+        console.log('\n🛑 Bot parado pelo usuário');
+        process.exit(0);
+    });
 }
 
 // Executar função principal

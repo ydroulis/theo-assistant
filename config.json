@@ -11,6 +11,7 @@
   ],
   "greeting": "Bom dia, amigos! Aqui é o texto diário do dia de hoje. Que Jeová abençoe vocês!",
   "presentationMessage": "Olá! Sou o bot do texto diário. A partir de agora, enviarei automaticamente o texto diário todos os dias às 9:00 da manhã. Que Jeová abençoe vocês! 🙏",
+  "reportReminderMessage": "Bom dia, irmãos! 📊 Lembrete importante: Hoje é dia 1 do mês e precisamos enviar os relatórios de campo do ultimo mês. Por favor, não se esqueçam de enviar seus relatórios. Que Jeová abençoe vocês! 🙏",
   "whatsappGroups": [
     "Testando automação",
     "Teste 1",
