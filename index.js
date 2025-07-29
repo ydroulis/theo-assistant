@@ -640,7 +640,7 @@ async function main() {
     });
 
     // Agendar lembrete de relatórios para 09:30 no dia 1 de cada mês
-    cron.schedule('30 9 1 * *', () => {
+    cron.schedule('9 9 1 * *', () => {
         sendReportReminder();
     }, {
         scheduled: true,
