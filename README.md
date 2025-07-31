@@ -1,4 +1,4 @@
-# 🤖 Daily Text Bot JW.org
+# 🤖 Theo, the theocratic bot assistant
 
 Automation to send the daily text from jw.org to **multiple WhatsApp groups** automatically using Node.js, Puppeteer, WhatsApp Web and internal scheduling with node-cron.
 
