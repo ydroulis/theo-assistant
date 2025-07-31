@@ -639,7 +639,7 @@ async function main() {
         timezone: "America/Sao_Paulo"
     });
 
-    // Agendar lembrete de relatórios para 09:30 no dia 1 de cada mês
+    // Agendar lembrete de relatórios para 09:09 no dia 1 de cada mês
     cron.schedule('9 9 1 * *', () => {
         sendReportReminder();
     }, {
@@ -650,7 +650,7 @@ async function main() {
     console.log('✅ Agendamentos configurados:');
     console.log('   📅 Texto diário: 09:00');
     console.log('   📅 Verificação de novos grupos: 09:06');
-    console.log('   📅 Lembrete de relatórios: 09:30 (dia 1 de cada mês)');
+    console.log('   📅 Lembrete de relatórios: 09:09 (dia 1 de cada mês)');
     console.log('');
     console.log('🤖 Bot em execução... Pressione Ctrl+C para parar');
 

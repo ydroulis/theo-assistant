@@ -74,7 +74,7 @@ node index.js --help                # Mostra ajuda completa
 O bot está configurado para rodar **automaticamente**:
 - **09:00** - Envio do texto diário para todos os grupos
 - **09:06** - Verificação de grupos novos (envia apresentação se necessário)
-- **09:30** - Lembrete de relatórios de campo (dia 1 de cada mês)
+- **09:09** - Lembrete de relatórios de campo (dia 1 de cada mês)
 
 Basta rodar:
 ```bash
@@ -121,15 +121,15 @@ No arquivo `index.js`, procure por:
 cron.schedule('0 9 * * *', runScheduledBot, {
 // 09:06 - Verificação de grupos novos
 cron.schedule('6 9 * * *', checkNewGroupsAndSendPresentation, {
-// 09:30 - Lembrete de relatórios (dia 1 do mês)
-cron.schedule('30 9 1 * *', sendReportReminder, {
+// 09:09 - Lembrete de relatórios (dia 1 do mês)
+cron.schedule('9 9 1 * *', sendReportReminder, {
 ```
 
 Altere para os horários desejados usando o formato cron:
 - `'0 9 * * *'` = 9:00 todos os dias
 - `'30 8 * * *'` = 8:30 todos os dias
 - `'0 9 * * 1-5'` = 9:00 de segunda a sexta
-- `'30 9 1 * *'` = 9:30 no dia 1 de cada mês
+- `'9 9 1 * *'` = 9:09 no dia 1 de cada mês
 
 Veja exemplos em: https://crontab.guru/
 
@@ -142,7 +142,7 @@ O bot agora exibe logs muito mais detalhados:
 ⏰ Agendamento configurado:
    - 09:00: Envio do texto diário
    - 09:06: Verificação de grupos novos
-   - 09:30: Lembrete de relatórios (dia 1 do mês)
+   - 09:09: Lembrete de relatórios (dia 1 do mês)
 📋 Grupos configurados: Testando automação, Teste 1, Teste 2
 📊 Status dos grupos:
 ✅ Testando automação - Apresentação enviada
@@ -162,7 +162,7 @@ O bot agora exibe logs muito mais detalhados:
 - ✅ **Sucesso**: Confirmação de cada mensagem enviada
 - ❌ **Erro**: Detalhes de erros específicos por grupo
 - 🔍 **Verificação**: Status de grupos novos às 09:06
-- 📊 **Relatórios**: Lembrete de relatórios às 09:30 (dia 1 do mês)
+- 📊 **Relatórios**: Lembrete de relatórios às 09:09 (dia 1 do mês)
 
 ## 🧪 Comandos de Teste
 
@@ -226,7 +226,7 @@ node index.js --reset-presentation
 - **Controle inteligente**: Não reenvia para grupos que já receberam
 
 ### Lembrete Automático de Relatórios de Campo
-- **09:30 no dia 1 de cada mês**: Envia lembrete de relatórios
+- **09:09 no dia 1 de cada mês**: Envia lembrete de relatórios
 - **Mensagem personalizada**: Lembra sobre envio de relatórios do mês anterior
 - **Envio para todos os grupos**: Todos os grupos configurados recebem o lembrete
 - **Configurável**: Mensagem pode ser personalizada no `config.json`
