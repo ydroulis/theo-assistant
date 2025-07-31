@@ -29,7 +29,7 @@ Automação para enviar o texto diário do site jw.org para **múltiplos grupos*
    ```
 
 2. **Configure o arquivo `config.json`:**
-   ```json
+```json
 {
   "greetings": [
     "Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!",
