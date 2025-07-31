@@ -29,28 +29,28 @@ Automação para enviar o texto diário do site jw.org para **múltiplos grupos*
    ```
 
 2. **Configure o arquivo `config.json`:**
-```json
-{
-  "greetings": [
-    "Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!",
-    "Bom dia, queridos irmãos! Compartilhando o texto diário de hoje. Abraços!",
-    "Bom dia, família! Aqui está o texto diário para hoje. Fiquem com Jeová!",
-    "Bom dia, amigos! Mais um texto diário fresquinho para vocês. Fiquem com Jeová!",
-    "Bom dia, irmãos! Compartilhando o texto diário do dia. Tenham um ótimo dia!",
-    "Bom dia, queridos amigos! Aqui está o texto diário de hoje. Até mais!",
-    "Bom dia, família! Vamos começar mais um dia com o texto diário de hoje. Espero que vocês tenham um dia maravilhoso!",
-    "Bom dia, irmãos! Compartilhando o texto diário para hoje. Fiquem com Jeová e Jesus!"
-  ],
-  "greeting": "Bom dia, amigos! Aqui é o texto diário do dia de hoje. Que Jeová abençoe vocês!",
-  "presentationMessage": "Olá! Sou o bot do texto diário. A partir de agora, enviarei automaticamente o texto diário todos os dias às 9:00 da manhã. Que Jeová abençoe vocês! 🙏",
-  "reportReminderMessage": "Bom dia, irmãos! 📊 Lembrete importante: Hoje é dia 1 do mês e precisamos enviar os relatórios de campo do mês passado. Por favor, não se esqueçam de enviar seus relatórios para o coordenador. Que Jeová abençoe vocês! 🙏",
-  "whatsappGroups": [
-    "Nome Exato do Grupo 1",
-    "Nome Exato do Grupo 2",
-    "Nome Exato do Grupo 3"
-  ]
-}
-```
+    ```json
+    {
+      "greetings": [
+        "Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!",
+        "Bom dia, queridos irmãos! Compartilhando o texto diário de hoje. Abraços!",
+        "Bom dia, família! Aqui está o texto diário para hoje. Fiquem com Jeová!",
+        "Bom dia, amigos! Mais um texto diário fresquinho para vocês. Fiquem com Jeová!",
+        "Bom dia, irmãos! Compartilhando o texto diário do dia. Tenham um ótimo dia!",
+        "Bom dia, queridos amigos! Aqui está o texto diário de hoje. Até mais!",
+        "Bom dia, família! Vamos começar mais um dia com o texto diário de hoje. Espero que vocês tenham um dia maravilhoso!",
+        "Bom dia, irmãos! Compartilhando o texto diário para hoje. Fiquem com Jeová e Jesus!"
+      ],
+      "greeting": "Bom dia, amigos! Aqui é o texto diário do dia de hoje. Que Jeová abençoe vocês!",
+      "presentationMessage": "Olá! Sou o bot do texto diário. A partir de agora, enviarei automaticamente o texto diário todos os dias às 9:00 da manhã. Que Jeová abençoe vocês! 🙏",
+      "reportReminderMessage": "Bom dia, irmãos! 📊 Lembrete importante: Hoje é dia 1 do mês e precisamos enviar os relatórios de campo do mês passado. Por favor, não se esqueçam de enviar seus relatórios para o coordenador. Que Jeová abençoe vocês! 🙏",
+      "whatsappGroups": [
+        "Nome Exato do Grupo 1",
+        "Nome Exato do Grupo 2",
+        "Nome Exato do Grupo 3"
+      ]
+    }
+    ```
 
 ## 🎯 Como usar
 
