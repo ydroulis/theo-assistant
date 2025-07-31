@@ -1,336 +1,337 @@
-# 🤖 Bot de Texto Diário JW.org
+# 🤖 Daily Text Bot JW.org
 
-Automação para enviar o texto diário do site jw.org para **múltiplos grupos** do WhatsApp automaticamente usando Node.js, Puppeteer, WhatsApp Web e agendamento interno com node-cron.
+Automation to send the daily text from jw.org to **multiple WhatsApp groups** automatically using Node.js, Puppeteer, WhatsApp Web and internal scheduling with node-cron.
 
-## ✨ Novidades da Versão Atualizada
+## ✨ Current Version Updates
 
-- ✅ **Saudações aleatórias** - Cada envio usa uma saudação diferente
-- ✅ **Comandos de teste** - Teste cada funcionalidade independentemente
-- ✅ **Verificação às 13:00** - Detecta grupos novos automaticamente
-- ✅ **Lembrete de relatórios** - Envia lembrete no dia 1 de cada mês
-- ✅ **Suporte a múltiplos grupos** - Envia para vários grupos simultaneamente
-- ✅ **Logs detalhados** - Progresso visual com timestamps
-- ✅ **Verificação de configuração** - Valida se há grupos configurados
-- ✅ **Tratamento de erros robusto** - Continua enviando mesmo se um grupo falhar
-- ✅ **Feedback de sucesso** - Confirma cada mensagem enviada
+- ✅ **Random greetings** - Each send uses a different greeting
+- ✅ **Test commands** - Test each functionality independently
+- ✅ **Verification at 13:00** - Automatically detects new groups
+- ✅ **Report reminders** - Sends reminder on the 1st of each month
+- ✅ **Multiple groups support** - Sends to several groups simultaneously
+- ✅ **Detailed logs** - Visual progress with timestamps
+- ✅ **Configuration verification** - Validates if groups are configured
+- ✅ **Robust error handling** - Continues sending even if one group fails
+- ✅ **Success feedback** - Confirms each sent message
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-- **Node.js** instalado (versão 14 ou superior)
-- **Google Chrome** instalado
-- **WhatsApp** no celular para escanear QR Code
-- **Conexão com internet**
+- **Node.js** installed (version 14 or higher)
+- **Google Chrome** installed
+- **WhatsApp** on mobile to scan QR Code
+- **Internet connection**
 
-## 🚀 Instalação
+## 🚀 Installation
 
-1. **Instale as dependências:**
+1. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. **Configure o arquivo `config.json`:**
-    ```json
-    {
-      "greetings": [
-        "Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!",
-        "Bom dia, queridos irmãos! Compartilhando o texto diário de hoje. Abraços!",
-        "Bom dia, família! Aqui está o texto diário para hoje. Fiquem com Jeová!",
-        "Bom dia, amigos! Mais um texto diário fresquinho para vocês. Fiquem com Jeová!",
-        "Bom dia, irmãos! Compartilhando o texto diário do dia. Tenham um ótimo dia!",
-        "Bom dia, queridos amigos! Aqui está o texto diário de hoje. Até mais!",
-        "Bom dia, família! Vamos começar mais um dia com o texto diário de hoje. Espero que vocês tenham um dia maravilhoso!",
-        "Bom dia, irmãos! Compartilhando o texto diário para hoje. Fiquem com Jeová e Jesus!"
-      ],
-      "greeting": "Bom dia, amigos! Aqui é o texto diário do dia de hoje. Que Jeová abençoe vocês!",
-      "presentationMessage": "Olá! Sou o bot do texto diário. A partir de agora, enviarei automaticamente o texto diário todos os dias às 9:00 da manhã. Que Jeová abençoe vocês! 🙏",
-      "reportReminderMessage": "Bom dia, irmãos! 📊 Lembrete importante: Hoje é dia 1 do mês e precisamos enviar os relatórios de campo do mês passado. Por favor, não se esqueçam de enviar seus relatórios para o coordenador. Que Jeová abençoe vocês! 🙏",
-      "whatsappGroups": [
-        "Nome Exato do Grupo 1",
-        "Nome Exato do Grupo 2",
-        "Nome Exato do Grupo 3"
-      ]
-    }
-    ```
+2. **Configure the `config.json` file:**
+   ```json
+   {
+     "greetings": [
+       "Good morning, friends! Here's today's daily text. May Jehovah bless you!",
+       "Good morning, dear brothers! Sharing today's daily text. Hugs!",
+       "Good morning, family! Here's the daily text for today. Stay with Jehovah!",
+       "Good morning, friends! Another fresh daily text for you. Stay with Jehovah!",
+       "Good morning, brothers! Sharing today's daily text. Have a great day!",
+       "Good morning, dear friends! Here's today's daily text. See you later!",
+       "Good morning, family! Let's start another day with today's daily text. I hope you have a wonderful day!",
+       "Good morning, brothers! Sharing today's daily text. Stay with Jehovah and Jesus!"
+     ],
+     "greeting": "Good morning, friends! Here's today's daily text. May Jehovah bless you!",
+     "presentationMessage": "Hello! I'm the daily text bot. From now on, I'll automatically send the daily text every day at 9:00 AM. May Jehovah bless you! 🙏",
+     "reportReminderMessage": "Good morning, brothers! 📊 Important reminder: Today is the 1st of the month and we need to send the field service reports from last month. Please don't forget to send your reports. May Jehovah bless you! 🙏",
+     "whatsappGroups": [
+       "Exact Group Name 1",
+       "Exact Group Name 2",
+       "Exact Group Name 3"
+     ]
+   }
+   ```
 
-## 🎯 Como usar
+## 🎯 How to use
 
-### Comandos Disponíveis
+### Available Commands
 
 ```bash
-# Execução normal (com agendamentos)
+# Normal execution (with schedules)
 node index.js
 
-# Comandos de teste
-node index.js --test-daily          # Testa envio do texto diário
-node index.js --test-presentation   # Testa envio da apresentação
-node index.js --test-report         # Testa envio do lembrete de relatórios
-node index.js --status              # Mostra status dos grupos
-node index.js --reset-presentation  # Reseta apresentações enviadas
-node index.js --help                # Mostra ajuda completa
+# Test commands
+node index.js --test-daily          # Test daily text sending
+node index.js --test-presentation   # Test presentation sending
+node index.js --test-report         # Test report reminder sending
+node index.js --status              # Show group status
+node index.js --reset-presentation  # Reset sent presentations
+node index.js --help                # Show complete help
 ```
 
-### Execução automática diária
+### Automatic daily execution
 
-O bot está configurado para rodar **automaticamente**:
-- **09:00** - Envio do texto diário para todos os grupos
-- **09:06** - Verificação de grupos novos (envia apresentação se necessário)
-- **09:09** - Lembrete de relatórios de campo (dia 1 de cada mês)
+The bot is configured to run **automatically**:
+- **09:00** - Send daily text to all groups
+- **09:06** - Check for new groups (sends presentation if needed)
+- **09:09** - Report reminder (1st of each month)
 
-Basta rodar:
+Just run:
 ```bash
 node index.js
 ```
-e deixar o terminal aberto. O bot executará sozinho nos horários programados.
+and leave the terminal open. The bot will run by itself at the scheduled times.
 
-## ⚙️ Configuração
+## ⚙️ Configuration
 
-### Grupos do WhatsApp
-Edite o arquivo `config.json` para adicionar/remover grupos:
+### WhatsApp Groups
+Edit the `config.json` file to add/remove groups:
 ```json
 {
   "greetings": [...],
-  "greeting": "Sua mensagem de saudação aqui",
-  "presentationMessage": "Sua mensagem de apresentação aqui",
+  "greeting": "Your greeting message here",
+  "presentationMessage": "Your presentation message here",
+  "reportReminderMessage": "Your report reminder message here",
   "whatsappGroups": [
-    "Nome Exato do Grupo 1",
-    "Nome Exato do Grupo 2",
-    "Nome Exato do Grupo 3"
+    "Exact Group Name 1",
+    "Exact Group Name 2",
+    "Exact Group Name 3"
   ]
 }
 ```
 
-### Personalização de Mensagens
-- **greetings**: Array com saudações aleatórias (obrigatório)
-- **greeting**: Saudação padrão (fallback)
-- **presentationMessage**: Mensagem enviada na primeira execução
-- **reportReminderMessage**: Mensagem de lembrete de relatórios (dia 1 do mês)
-- **whatsappGroups**: Array com os nomes exatos dos grupos
+### Message Customization
+- **greetings**: Array with random greetings (required)
+- **greeting**: Default greeting (fallback)
+- **presentationMessage**: Message sent on first execution
+- **reportReminderMessage**: Report reminder message (1st of month)
+- **whatsappGroups**: Array with exact group names
 
-### Saudações Aleatórias
-O bot escolhe automaticamente uma saudação diferente a cada envio:
-- ✅ Sempre começam com "Bom dia"
-- ✅ Sempre têm uma introdução ao texto
-- ✅ Sempre terminam com uma bênção
-- ✅ Variam entre "amigos", "irmãos", "família"
-- ✅ Usam diferentes verbos: "compartilhando", "aqui está", "segue"
+### Random Greetings
+The bot automatically chooses a different greeting for each send:
+- ✅ Always start with "Good morning"
+- ✅ Always have an introduction to the text
+- ✅ Always end with a blessing
+- ✅ Vary between "friends", "brothers", "family"
+- ✅ Use different verbs: "sharing", "here is", "follows"
 
-### Alterar Horários de Execução
-No arquivo `index.js`, procure por:
+### Change Execution Times
+In the `index.js` file, look for:
 ```js
-// 09:00 - Texto diário
+// 09:00 - Daily text
 cron.schedule('0 9 * * *', runScheduledBot, {
-// 09:06 - Verificação de grupos novos
+// 09:06 - Check for new groups
 cron.schedule('6 9 * * *', checkNewGroupsAndSendPresentation, {
-// 09:09 - Lembrete de relatórios (dia 1 do mês)
+// 09:09 - Report reminder (1st of month)
 cron.schedule('9 9 1 * *', sendReportReminder, {
 ```
 
-Altere para os horários desejados usando o formato cron:
-- `'0 9 * * *'` = 9:00 todos os dias
-- `'30 8 * * *'` = 8:30 todos os dias
-- `'0 9 * * 1-5'` = 9:00 de segunda a sexta
-- `'9 9 1 * *'` = 9:09 no dia 1 de cada mês
+Change to desired times using cron format:
+- `'0 9 * * *'` = 9:00 every day
+- `'30 8 * * *'` = 8:30 every day
+- `'0 9 * * 1-5'` = 9:00 Monday to Friday
+- `'9 9 1 * *'` = 9:09 on the 1st of each month
 
-Veja exemplos em: https://crontab.guru/
+See examples at: https://crontab.guru/
 
-## 📝 Logs Detalhados
+## 📝 Detailed Logs
 
-O bot agora exibe logs muito mais detalhados:
+The bot now displays much more detailed logs:
 
 ```
-🚀 Bot do Texto Diário iniciado!
-⏰ Agendamento configurado:
-   - 09:00: Envio do texto diário
-   - 09:06: Verificação de grupos novos
-   - 09:09: Lembrete de relatórios (dia 1 do mês)
-📋 Grupos configurados: Testando automação, Teste 1, Teste 2
-📊 Status dos grupos:
-✅ Testando automação - Apresentação enviada
-✅ Teste 1 - Apresentação enviada
-⏳ Teste 2 - Pendente
-🎲 Saudação escolhida: Bom dia, amigos! Segue o texto diário do dia de hoje. Que Jeová abençoe vocês!
-📤 Enviando texto diário para grupo 1/3: Testando automação
-✅ Mensagem enviada para Testando automação
+🚀 Daily Text Bot started!
+⏰ Scheduling configured:
+   - 09:00: Daily text sending
+   - 09:06: New groups verification
+   - 09:09: Report reminder (1st of month)
+📋 Configured groups: Testing automation, Test 1, Test 2
+📊 Group status:
+✅ Testing automation - Presentation sent
+✅ Test 1 - Presentation sent
+⏳ Test 2 - Pending
+🎲 Chosen greeting: Good morning, friends! Here's today's daily text. May Jehovah bless you!
+📤 Sending daily text to group 1/3: Testing automation
+✅ Message sent to Testing automation
 ```
 
-### Tipos de Logs
-- 🚀 **Inicialização**: Status do bot e configurações
-- ⏰ **Agendamento**: Horários programados
-- 📋 **Configuração**: Grupos configurados
-- 🎲 **Saudação**: Qual saudação foi escolhida
-- 📤 **Progresso**: Qual grupo está sendo processado
-- ✅ **Sucesso**: Confirmação de cada mensagem enviada
-- ❌ **Erro**: Detalhes de erros específicos por grupo
-- 🔍 **Verificação**: Status de grupos novos às 09:06
-- 📊 **Relatórios**: Lembrete de relatórios às 09:09 (dia 1 do mês)
+### Log Types
+- 🚀 **Initialization**: Bot status and configurations
+- ⏰ **Scheduling**: Programmed times
+- 📋 **Configuration**: Configured groups
+- 🎲 **Greeting**: Which greeting was chosen
+- 📤 **Progress**: Which group is being processed
+- ✅ **Success**: Confirmation of each sent message
+- ❌ **Error**: Specific error details per group
+- 🔍 **Verification**: New groups status at 09:06
+- 📊 **Reports**: Report reminder at 09:09 (1st of month)
 
-## 🧪 Comandos de Teste
+## 🧪 Test Commands
 
-### Testar Texto Diário
+### Test Daily Text
 ```bash
 node index.js --test-daily
 ```
-- Obtém o texto diário atual
-- Escolhe uma saudação aleatória
-- Envia para todos os grupos configurados
+- Gets current daily text
+- Chooses a random greeting
+- Sends to all configured groups
 
-### Testar Apresentação
+### Test Presentation
 ```bash
 node index.js --test-presentation
 ```
-- Envia mensagem de apresentação
-- Apenas para grupos que ainda não receberam
-- Marca grupos como "apresentação enviada"
+- Sends presentation message
+- Only to groups that haven't received it yet
+- Marks groups as "presentation sent"
 
-### Testar Lembrete de Relatórios
+### Test Report Reminder
 ```bash
 node index.js --test-report
 ```
-- Envia mensagem de lembrete de relatórios
-- Para todos os grupos configurados
-- Útil para testar a funcionalidade antes do dia 1
+- Sends report reminder message
+- To all configured groups
+- Useful for testing functionality before the 1st
 
-### Verificar Status
+### Check Status
 ```bash
 node index.js --status
 ```
-- Mostra quais grupos já receberam apresentação
-- Mostra quais grupos estão pendentes
-- Não executa nenhuma ação
+- Shows which groups have already received presentation
+- Shows which groups are pending
+- Doesn't execute any action
 
-### Resetar Apresentações
+### Reset Presentations
 ```bash
 node index.js --reset-presentation
 ```
-- Remove o arquivo de controle de apresentações
-- Permite reenviar apresentação para todos os grupos
-- Útil para testes ou quando adicionar novos grupos
+- Removes the presentation control file
+- Allows resending presentation to all groups
+- Useful for testing or when adding new groups
 
-## 🔧 Funcionalidades Avançadas
+## 🔧 Advanced Features
 
-### Primeira Execução
-- Envia mensagem de apresentação para grupos novos
-- Salva sessão do WhatsApp para próximas execuções
-- Cria arquivo `presentation-sent.json` para controle
+### First Execution
+- Sends presentation message to new groups
+- Saves WhatsApp session for next executions
+- Creates `presentation-sent.json` file for control
 
-### Execuções Seguintes
-- Envia texto diário automaticamente às 9:00
-- Verifica grupos novos às 13:00
-- Não precisa escanear QR Code novamente
-- Processa grupos sequencialmente (um por vez)
+### Subsequent Executions
+- Sends daily text automatically at 9:00
+- Checks for new groups at 9:06
+- Doesn't need to scan QR Code again
+- Processes groups sequentially (one at a time)
 
-### Verificação Automática de Grupos Novos
-- **09:06 diariamente**: Verifica se há grupos novos
-- **Detecção automática**: Identifica grupos sem apresentação
-- **Envio automático**: Envia apresentação para grupos novos
-- **Controle inteligente**: Não reenvia para grupos que já receberam
+### Automatic New Groups Verification
+- **09:06 daily**: Checks if there are new groups
+- **Automatic detection**: Identifies groups without presentation
+- **Automatic sending**: Sends presentation to new groups
+- **Smart control**: Doesn't resend to groups that already received
 
-### Lembrete Automático de Relatórios de Campo
-- **09:09 no dia 1 de cada mês**: Envia lembrete de relatórios
-- **Mensagem personalizada**: Lembra sobre envio de relatórios do mês anterior
-- **Envio para todos os grupos**: Todos os grupos configurados recebem o lembrete
-- **Configurável**: Mensagem pode ser personalizada no `config.json`
+### Report Reminder Automation
+- **09:09 on the 1st of each month**: Sends report reminder
+- **Personalized message**: Reminds about sending reports from previous month
+- **Send to all groups**: All configured groups receive the reminder
+- **Configurable**: Message can be personalized in `config.json`
 
-### Tratamento de Erros
-- Se um grupo falhar, continua com os próximos
-- Logs detalhados para cada erro
-- Pausas entre envios para evitar spam
-- Múltiplas tentativas para encontrar elementos da interface
+### Error Handling
+- If one group fails, continues with the next ones
+- Detailed logs for each error
+- Pauses between sends to avoid spam
+- Multiple attempts to find interface elements
 
-## 🔒 Segurança
+## 🔒 Security
 
-- O bot não armazena senhas
-- Use apenas em computadores seguros
-- Não compartilhe o arquivo `config.json`
-- Sessão salva localmente na pasta `whatsapp-session/`
+- The bot doesn't store passwords
+- Use only on secure computers
+- Don't share the `config.json` file
+- Session saved locally in `whatsapp-session/` folder
 
-## 🛠️ Solução de Problemas
+## 🛠️ Troubleshooting
 
-### Bot não abre
-- Verifique se o Google Chrome está instalado
-- Execute como administrador se necessário
+### Bot doesn't open
+- Check if Google Chrome is installed
+- Run as administrator if necessary
 
-### QR Code não aparece
-- Aguarde alguns segundos para a página carregar
-- Verifique a conexão com internet
+### QR Code doesn't appear
+- Wait a few seconds for the page to load
+- Check internet connection
 
-### Mensagens não são enviadas
-- Verifique se os nomes dos grupos estão corretos no `config.json`
-- Certifique-se de que os grupos existem no WhatsApp
-- Teste com `node index.js --test-daily` primeiro
+### Messages aren't sent
+- Check if group names are correct in `config.json`
+- Make sure groups exist in WhatsApp
+- Test with `node index.js --test-daily` first
 
-### Erro "Nenhum grupo configurado"
-- Adicione grupos no arquivo `config.json`
-- Verifique se o arquivo está no formato JSON correto
+### "No groups configured" error
+- Add groups in the `config.json` file
+- Check if the file is in correct JSON format
 
-### Bot para de funcionar
-- Feche o executável e execute novamente
-- Verifique se não há outro processo do bot rodando
+### Bot stops working
+- Close the executable and run again
+- Check if there's no other bot process running
 
-### Saudação não muda
-- Verifique se o array `greetings` está configurado no `config.json`
-- Certifique-se de que há múltiplas saudações no array
+### Greeting doesn't change
+- Check if the `greetings` array is configured in `config.json`
+- Make sure there are multiple greetings in the array
 
-## 📞 Suporte
+## 📞 Support
 
-Se encontrar problemas:
-1. **Execute `node index.js --status`** para verificar configuração
-2. **Teste com `node index.js --test-daily`** para validar funcionamento
-3. **Verifique os logs** no console
-4. **Confirme os nomes dos grupos** no `config.json`
-5. **Teste com um grupo pequeno** primeiro
+If you encounter problems:
+1. **Run `node index.js --status`** to check configuration
+2. **Test with `node index.js --test-daily`** to validate functionality
+3. **Check the logs** in the console
+4. **Confirm group names** in `config.json`
+5. **Test with a small group** first
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 texto-diario-bot/
-├── index.js                    # Bot principal com comandos
-├── getDailyText.js             # Obtém texto do jw.org
-├── config.json                 # Configuração e saudações
-├── package.json                # Dependências
-├── whatsapp-session/           # Sessão salva do WhatsApp
-├── presentation-sent.json      # Controle de apresentação
-└── README.md                   # Este arquivo
+├── index.js                    # Main bot with commands
+├── getDailyText.js             # Gets text from jw.org
+├── config.json                 # Configuration and greetings
+├── package.json                # Dependencies
+├── whatsapp-session/           # Saved WhatsApp session
+├── presentation-sent.json      # Presentation control
+└── README.md                   # This file
 ```
 
-## 🎯 Exemplos de Uso
+## 🎯 Usage Examples
 
-### Configuração Inicial
+### Initial Configuration
 ```bash
-# 1. Configure os grupos no config.json
-# 2. Teste a configuração
+# 1. Configure groups in config.json
+# 2. Test configuration
 node index.js --status
 
-# 3. Teste o envio da apresentação
+# 3. Test presentation sending
 node index.js --test-presentation
 
-# 4. Teste o envio do texto diário
+# 4. Test daily text sending
 node index.js --test-daily
 
-# 5. Teste o lembrete de relatórios
+# 5. Test report reminder
 node index.js --test-report
 
-# 6. Execute o bot com agendamentos
+# 6. Run bot with schedules
 node index.js
 ```
 
-### Adicionar Novos Grupos
+### Add New Groups
 ```bash
-# 1. Adicione os grupos no config.json
-# 2. Verifique o status
+# 1. Add groups in config.json
+# 2. Check status
 node index.js --status
 
-# 3. Execute o bot (apresentação será enviada às 13:00)
+# 3. Run bot (presentation will be sent at 09:06)
 node index.js
 ```
 
-### Resetar Apresentações
+### Reset Presentations
 ```bash
-# Para reenviar apresentação para todos os grupos
+# To resend presentation to all groups
 node index.js --reset-presentation
 node index.js --test-presentation
 ```
 
 ---
 
-**Projeto otimizado com saudações aleatórias, comandos de teste, verificação automática de grupos novos e lembrete de relatórios! 🚀** 
+**Project optimized with random greetings, test commands, automatic new groups verification and report reminders! 🚀** 
